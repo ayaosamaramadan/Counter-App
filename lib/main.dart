@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: PointsCounter(),
     );
@@ -25,62 +25,103 @@ class PointsCounter extends StatefulWidget {
 class _PointsCounterState extends State<PointsCounter> {
   int _counter = 0;
 
+  void _increment() => setState(() => _counter++);
+  void _decrement() => setState(() =>_counter--);
+  void _reset() => setState(() => _counter = 0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purpleAccent,
-        title: Text("Points Counter"),
+        title: const Text("Points Counter"),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(height: 50),
-            Text(
+            const Text(
               "Counter",
               style: TextStyle(
-                fontSize: 30,
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Colors.purpleAccent,
               ),
             ),
-            SizedBox(height: 20),
-            Text(
-              '$_counter',
-              style: TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-                color: Colors.purpleAccent,
+            const SizedBox(height: 20),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, anim) => ScaleTransition(scale: anim, child: child),
+              child: Text(
+                '$_counter',
+                key: ValueKey<int>(_counter),
+                style: const TextStyle(
+                  fontSize: 60,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.purpleAccent,
+                ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _counter++;
-                    });
-                  },
+                  onPressed: _counter > 0 ? _decrement : null,
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    backgroundColor: Colors.redAccent,
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 4,
                   ),
-                  child: Text("Increment Points"),
+                  child: const Text("-"),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 30),
                 ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _counter--;
-                    });
-                  },
+                  onPressed: _increment,
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 4,
                   ),
-                  child: Text("Decrement Points"),
+                  child: const Text("+"),
                 ),
               ],
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton.icon(
+              onPressed: _reset,
+              icon: const Icon(Icons.refresh),
+              label: const Text("Reset Points"),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+                backgroundColor: Colors.purpleAccent,
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 2,
+              ),
             ),
           ],
         ),
