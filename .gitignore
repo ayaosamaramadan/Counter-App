@@ -4,3 +4,19 @@
 # But not these files/directories
 !.gitignore
 !lib/
+
+# Flutter/Dart standard ignores
+.dart_tool/
+.packages
+.pub/
+build/
+.idea/
+*.iml
+
+# Don't ignore lib/ or any Dart files
+!lib/
+!pubspec.yaml
+!pubspec.lock
+
+# Ignore everything else only if you want
+# *
